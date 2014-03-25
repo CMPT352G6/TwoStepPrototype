@@ -1,0 +1,99 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <title>Two Step Auth Demo</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/ui-darkness/jquery-ui.min.css">
+
+    
+
+  <script>
+  $(document).ready(function(){
+    var isDynamicCodeInserted = false;
+    $( "#register-dialog" ).dialog({
+        draggable: false,
+        resizable: false,
+        height: $( window ).height() / 2,
+        width: $( window ).width() / 2.7,
+        modal: true,
+        beforeClose: function(event, ui){event.preventDefault();},
+        buttons: {
+            "Submit": function() {
+              
+              if ($( "#username" ).val().length < 4) {
+                alert("Username should be at least 4 characters.")
+              }
+              else if ($( "#password" ).val().length < 4){
+                alert("Password should be at least 4 characters.")
+              }
+              else if (! isDynamicCodeInserted) {
+                $.ajax({
+                  url: "/verify",
+                  type: "GET",
+                  data: $( "#UIDform" ).serialize(),
+                })
+                .done(function(response){
+                  $('div#information').html('Please input this number on your device:<br>');
+                  $('div#information').append(response['counter']);
+                  $('#UIDform').append('<div >Dynamic Code:<input id="dynamicCode" name="dynamicCode" type="text" /></div>');
+                  isDynamicCodeInserted = true;
+                  return;
+                })
+                .fail(function(xhr){
+                  response = JSON.parse(xhr.responseText);
+                  $('div#information').html('Login Failed.<br>');
+                  $('div#information').append(response['reason']);
+                  return;
+                });
+              }
+              else{
+                console.log($( "form" ).serialize())
+                $.ajax({
+                  url: "/verify",
+                  type: "POST",
+                  data: $( "#UIDform" ).serialize(),
+                })
+                .done(function(){
+                  $('div#information').html('Login Succeed!');
+                  return;
+                })
+                .fail(function(xhr){
+                  response = JSON.parse(xhr.responseText);
+                  $('div#information').html('Login Failed!<br>');
+                  $('div#information').append(response['reason']);
+                  return;
+                });
+              };
+                
+            },
+        },
+    });
+
+
+  });
+
+  
+  </script>
+</head>
+<body>
+ 
+<div id="register-dialog" title="Login">
+    <div id="content" >
+    <p>
+        Login Here.
+    </p>
+    <i><b><div id="information"></div></b></i>
+
+    <form id="UIDform" action="/verify" method="get">
+        <div >Username:<input id="username" name="username" type="text" /></div>
+        <div >Password:<input id="password" name="password" type="text" /></div>
+    </form>
+    </div>
+</div>
+ 
+
+ 
+ 
+</body>
+</html>

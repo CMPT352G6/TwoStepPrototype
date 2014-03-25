@@ -6,4 +6,3 @@ class UserList(ndb.Model):
     Password = ndb.StringProperty(required = True)
     SecretKey = ndb.StringProperty(required = True, indexed=False)
     Counter = ndb.StringProperty()
-    CounterTime = ndb.DateTimeProperty(auto_now_add=True)

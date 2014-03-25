@@ -5,12 +5,29 @@ api_version: 1
 threadsafe: yes
 
 handlers:
+
+- url: /
+  static_files: static/index.html
+  upload: static/index.html
+
+- url: /login.html
+  static_files: static/login.html
+  upload: static/login.html
+
+- url: /register.html
+  static_files: static/register.html
+  upload: static/register.html
+
 - url: /favicon\.ico
   static_files: favicon.ico
   upload: favicon\.ico
 
-- url: /userReg
+- url: /register
   script: register.app
+  secure: always
+
+- url: /verify
+  script: verify.app
   secure: always
 
 libraries:

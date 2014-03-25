@@ -1,0 +1,44 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <title>Two Step Auth Demo</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/ui-darkness/jquery-ui.min.css">
+
+    
+
+  <script>
+  $(document).ready(function(){
+    $( "#register-dialog" ).dialog({
+        draggable: false,
+        resizable: false,
+        height: $( window ).height() / 2,
+        width: $( window ).width() / 2.7,
+        modal: true,
+        beforeClose: function(event, ui){event.preventDefault();},
+    });
+
+
+  });
+
+  
+  </script>
+</head>
+<body>
+ 
+<div id="register-dialog" title="Register User">
+    <div id="content" >
+    <p>
+        Select option:
+    </p>
+
+    <a href="/register.html">Register</a>
+    <a href="/login.html">Login</a>
+</div>
+ 
+
+ 
+ 
+</body>
+</html>
