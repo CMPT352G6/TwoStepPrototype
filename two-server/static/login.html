@@ -20,10 +20,11 @@
         beforeClose: function(event, ui){event.preventDefault();},
         buttons: {
             "Submit": function() {
-              
+              // Check username
               if ($( "#username" ).val().length < 4) {
                 alert("Username should be at least 4 characters.")
               }
+              // Check password
               else if ($( "#password" ).val().length < 4){
                 alert("Password should be at least 4 characters.")
               }

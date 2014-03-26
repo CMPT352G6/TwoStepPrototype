@@ -11,7 +11,7 @@ from Database import UserList
 class VerifyHandler(webapp2.RequestHandler):
     def get(self):
         '''Return a json containing counter'''
-        # Get password
+        # Get username and password
         username = self.request.get("username","")
         password = self.request.get("password","")
         # Verify username
@@ -20,32 +20,36 @@ class VerifyHandler(webapp2.RequestHandler):
             storedPassword = user.Password
             # Verify password
             if password == storedPassword:
-                # Generate a random number for counter.
+                # Generate a random number as counter.
                 randomCounter = random.randrange(10000000,99999999)
-                # Save it to user.
+                # Assign counter to the user.
                 user.Counter = str(randomCounter)
                 user.put()
-                # Return it to user.
+                # Send counter back to client.
                 self.response.status = 200
                 self.response.body = json.dumps({"success": True, "counter": randomCounter})
                 self.response.content_type = 'application/json'
             else:
-                # Any failure will return a message.
+                # Send failure message.
                 self.setFailResponse("Wrong Username/Password Combination")
         else:
-            # Any failure will return a message.
+            # Send failure message.
             self.setFailResponse("Wrong Username/Password Combination")
         
 
     def post(self):
-        # Get parameters from request.
+        # Get username and dynamic code from request.
         username = self.request.get("username","")
         dynamicCode = int(self.request.get("dynamicCode","0"))
+        # Verify username
         if self.isUserExisted(username):
             user = UserList.query(UserList.Username == username).get()
+            # Get key and counter 
             counter = int(user.Counter)
             secret = str(user.SecretKey)
+            # Calcuate dynamic code
             expectedCode = int(self.HOTP(secret,counter))
+            # Verify dynamic code
             if expectedCode == dynamicCode:
                 self.setSuccessResponse()
             else:
