@@ -1,0 +1,42 @@
+<!doctype html>
+{% autoescape true %}
+<head>
+    <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/ui-darkness/jquery-ui.min.css">
+    <title>{{ title }}</title>
+
+    <style>
+        .notice{
+            color: red;
+        }
+    </style>
+    <script>
+    $(document).ready(function(){
+        $( "#success-dialog" ).dialog({
+            draggable: false,
+            height: "auto",
+            width: $( window ).width() / 2.5,
+            resizable: false,
+            modal: true,
+            beforeClose: function(event, ui){event.preventDefault();},
+            
+        });
+    });
+    
+
+      
+    </script>
+</head>
+
+<body>
+    <div id="success-dialog" title="{{ title }}">
+        <b><i>{{ message }}<br></i></b>
+        <p>
+            {{ detail }}
+        </p>
+    </div>
+    
+</body>
+{% endautoescape %}
