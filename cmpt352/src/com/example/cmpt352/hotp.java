@@ -14,21 +14,8 @@ import java.security.InvalidKeyException;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
-/**
- * This class contains static methods that are used to calculate the
- * One-Time Password (OTP) using
- * JCE to provide the HMAC-SHA-1.
- *
- * @author Loren Hart
- * @version 1.0
- */
 public class hotp {
 
-//    private hotp() {
-//    }
-
-    // These are used to calculate the check-sum digits.
-    //                                0  1  2  3  4  5  6  7  8  9
     private static final int[] doubleDigits = {0, 2, 4, 6, 8, 1, 3, 5, 7, 9};
 
     /**
@@ -164,21 +151,6 @@ public class hotp {
         return result;
     }
 
-    /*
-    public static void main(String[] args) {
-    String pass = "12345678901234567890";
-    byte[] code = pass.getBytes();
-    for (int i = 0; i < 10; i++) {
-    try {
-    System.out.println(HOTPAlgorithm.generateOTP(code, i, 6, false, i));
-    }
-    catch (Exception e) {
-    System.out.println("Exception = " + e);
-    }
-    }
-    }
-
-     */
 }
 
 

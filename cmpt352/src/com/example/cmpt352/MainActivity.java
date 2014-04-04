@@ -8,6 +8,7 @@ import android.provider.Settings.Secure;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -34,6 +35,7 @@ public class MainActivity extends Activity {
 		
 		generateB = (Button)findViewById(R.id.button1);
 		password = (EditText)findViewById(R.id.TextView01);
+		password.setTextColor(Color.WHITE);
 		code = (EditText)findViewById(R.id.editText);
 		android_id = Secure.getString(getBaseContext().getContentResolver(),Secure.ANDROID_ID); 
 		deviceID = (Button)findViewById(R.id.idButton);
