@@ -20,20 +20,22 @@
         beforeClose: function(event, ui){event.preventDefault();},
         buttons: {
             "Submit": function() {
-              // Check username
+              // Username and password should be at least 4 characters.
               if ($( "#username" ).val().length < 4) {
                 alert("Username should be at least 4 characters.")
               }
-              // Check password
               else if ($( "#password" ).val().length < 4){
                 alert("Password should be at least 4 characters.")
               }
+              // If have not verified username and password
               else if (! isDynamicCodeInserted) {
+                // Verify username and password
                 $.ajax({
                   url: "/verify",
                   type: "GET",
                   data: $( "#UIDform" ).serialize(),
                 })
+                // Get random code from server, insert input box for dynamic code
                 .done(function(response){
                   $('div#information').html('Please input this number on your device:<br>');
                   $('div#information').append(response['counter']);
@@ -41,6 +43,7 @@
                   isDynamicCodeInserted = true;
                   return;
                 })
+                // When failed, print failure message and reason.
                 .fail(function(xhr){
                   response = JSON.parse(xhr.responseText);
                   $('div#information').html('Login Failed.<br>');
@@ -48,6 +51,7 @@
                   return;
                 });
               }
+              // Send dynamic code to server and verify it.
               else{
                 console.log($( "form" ).serialize())
                 $.ajax({
@@ -55,14 +59,23 @@
                   type: "POST",
                   data: $( "#UIDform" ).serialize(),
                 })
+                // When done, print success message, and redirect to Google in 5s
                 .done(function(){
-                  $('div#information').html('Login Succeed!');
+                  $('div#information').html('Login Succeed!<br>');
+                  $('div#information').append("Redirect to Google in 5s");
+                  setTimeout(function(){
+                      window.location.href = "https://www.google.com/"
+                  },5000);
                   return;
                 })
+                // When fail, refresh page to return to initial status.
                 .fail(function(xhr){
                   response = JSON.parse(xhr.responseText);
                   $('div#information').html('Login Failed!<br>');
-                  $('div#information').append(response['reason']);
+                  $('div#information').append("Redirect to login page in 5s");
+                  setTimeout(function(){
+                      window.location.reload();
+                  },5000);
                   return;
                 });
               };

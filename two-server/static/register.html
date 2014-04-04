@@ -10,15 +10,19 @@
 
   <script>
   $(document).ready(function(){
+    // Create login dialog
     $( "#register-dialog" ).dialog({
         draggable: false,
         resizable: false,
         height: $( window ).height() / 2,
         width: $( window ).width() / 2.7,
         modal: true,
+        // Not allow to be closed
         beforeClose: function(event, ui){event.preventDefault();},
         buttons: {
+            // Set buttons
             "Submit": function() {
+                // Username, password and serial number should be at least 4 characters.
                 if ($( "#username" ).val().length < 4) {
                   alert("Username should be at least 4 characters.")
                 }
@@ -29,22 +33,28 @@
                   alert("Serial number should be at least 4 characters.")
                 }
                 else{
+                  // Send ajax request
                   $.ajax({
                     url: "/register",
                     type: "POST",
                     data: $( "#UIDform" ).serialize(),
                   })
+                  // When done, print success message, and go back to login page
                   .done(function(){
-                    $('div#information').html('Register Completed.');
+                    $('div#information').html('Register Completed.<br>');
+                    $('div#information').append('Redirect back to index page in 5s...');
+                    setTimeout(function(){
+                      history.go(-1);
+                    },5000);
                     return;
                   })
+                  // When failed, print failure message and reason.
                   .fail(function(xhr){
                     response = JSON.parse(xhr.responseText);
                     $('div#information').html('Register Failed.<br>');
                     $('div#information').append(response['reason']);
                     return;
                   });
-                  // event.preventDefault();
                 };
                 
             },
