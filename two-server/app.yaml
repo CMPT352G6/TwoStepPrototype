@@ -9,14 +9,17 @@ handlers:
 - url: /
   static_files: static/index.html
   upload: static/index.html
+  secure: always
 
 - url: /login.html
   static_files: static/login.html
   upload: static/login.html
+  secure: always
 
 - url: /register.html
   static_files: static/register.html
   upload: static/register.html
+  secure: always
 
 - url: /favicon\.ico
   static_files: favicon.ico

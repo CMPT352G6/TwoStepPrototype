@@ -32,6 +32,10 @@
                 else if ($( "#serialNumber" ).val().length < 4){
                   alert("Serial number should be at least 4 characters.")
                 }
+                // Confirm password
+                else if ($( "#password" ).val() != $( "#passwordConfirm" ).val()){
+                  alert("Password mismatch: please input the same password in each field.")
+                }
                 else{
                   // Send ajax request
                   $.ajax({
@@ -78,7 +82,8 @@
 
     <form id="UIDform" method="post">
         <div >Username<input id="username" name="username" type="text"></div>
-        <div >Password<input id="password" name="password" type="text"></div>
+        <div >Password<input id="password" name="password" type="password"></div>
+        <div >Confirm:<input id="passwordConfirm" name="passwordConfirm" type="password" /></div>
         <div >Device Number<input id="serialNumber" name="serialNumber" type="text"></div>
     </form>
     </div>
