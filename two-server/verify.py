@@ -40,7 +40,12 @@ class VerifyHandler(webapp2.RequestHandler):
     def post(self):
         # Get username and dynamic code from request.
         username = self.request.get("username","")
-        dynamicCode = int(self.request.get("dynamicCode","0"))
+        try:
+            dynamicCode = int(self.request.get("dynamicCode","0"))
+        except ValueError, e:
+            self.setFailResponse('Unable to parse dynamic code to integar')
+            return
+        
         # Verify username
         if self.isUserExisted(username):
             user = UserList.query(UserList.Username == username).get()
