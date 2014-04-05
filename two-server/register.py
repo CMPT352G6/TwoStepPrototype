@@ -3,10 +3,11 @@ from Database import UserList
 
 class RegisterHandler(webapp2.RequestHandler):
 
-    # Deny GET request.
     def get(self):
+        '''Deny GET request.'''
         self.denyIllegalAccess('Method Not Allowed')
     def post(self):
+        '''Handle registeration request'''
         # Get parameters from request.
         username = self.request.get("username","")
         password = self.request.get("password","")
@@ -20,7 +21,7 @@ class RegisterHandler(webapp2.RequestHandler):
             user.put()
             self.setSuccessResponse()
 
-        # Deny adding when a duplicated user is found.
+        # Deny registering when a duplicated user is found.
         else:
             self.denyIllegalAccess('Username Existed')
     def isUserExisted(self, username):
@@ -29,14 +30,14 @@ class RegisterHandler(webapp2.RequestHandler):
         # Expected to get None for True
         return UserList.query(UserList.Username == username).get() != None
 
-    # Send success message.
     def setSuccessResponse(self):
+        '''Set success response'''
         self.response.status = 200
         self.response.body = json.dumps({"success": True})
         self.response.content_type = 'application/json'
 
-    # Send failure message.
     def denyIllegalAccess(self, reason):
+        '''Set failure response'''
         self.response.status = 403
         self.response.body = json.dumps({"success": False, "reason": reason})
         self.response.content_type = 'application/json'

@@ -10,7 +10,7 @@ from Database import UserList
 
 class VerifyHandler(webapp2.RequestHandler):
     def get(self):
-        '''Return a json containing counter'''
+        '''Verify user, and return a json string containing counter'''
         # Get username and password
         username = self.request.get("username","")
         password = self.request.get("password","")
@@ -38,8 +38,10 @@ class VerifyHandler(webapp2.RequestHandler):
         
 
     def post(self):
+        '''Verify user and dynamic code, and return a json string indicating result.'''
         # Get username and dynamic code from request.
         username = self.request.get("username","")
+        # Try to parse dynamic code. Return error message if parse failed.
         try:
             dynamicCode = int(self.request.get("dynamicCode","0"))
         except ValueError, e:
@@ -70,21 +72,27 @@ class VerifyHandler(webapp2.RequestHandler):
         return UserList.query(UserList.Username == username).get() != None
 
     def setSuccessResponse(self):
+        '''Set success response'''
         self.response.status = 200
         self.response.body = json.dumps({"success": True})
         self.response.content_type = 'application/json'
 
     def setFailResponse(self, reason):
+        '''Set failure response'''
         self.response.status = 403
         self.response.body = json.dumps({"success": False, "reason": reason})
         self.response.content_type = 'application/json'
 
     def HOTP(self,key, counter, digits=8):
+        '''Compute OTP'''
+        # Convert key to byte array
         C_bytes = struct.pack(b"!Q", counter)
+        # Compute and return OTP
         hmac_sha1 = hmac.new(key=key, msg=C_bytes, digestmod=hashlib.sha1).hexdigest()
         return self.truncate(hmac_sha1)[-digits:]
 
     def truncate(self,hmac_sha1):
+        '''Dynamically select 4 bytes from SHA-1 value by its last byte.'''
         offset = int(hmac_sha1[-1], 16)
         binary = int(hmac_sha1[offset * 2:(offset * 2 + 8)], 16) & 0x7fffffff
         return str(binary)
