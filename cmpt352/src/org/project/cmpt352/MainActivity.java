@@ -1,22 +1,16 @@
-package com.example.cmpt352;
+package org.project.cmpt352;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
+import com.example.cmpt352.R;
 
 import android.os.Bundle;
 import android.provider.Settings.Secure;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.HorizontalScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
@@ -67,7 +61,7 @@ public class MainActivity extends Activity {
 		byte[] deviceCode = android_id.getBytes();
 		String newPassword="";
 		try {
-		newPassword = HOTPalgorithm.generateOTP(deviceCode, inCode, 8, false, inCode);
+		newPassword = hotp.generateOTP(deviceCode, inCode, 8, false, inCode);
 		}
 	    catch (Exception e) {
 	        System.out.println("Exception = " + e);
@@ -83,7 +77,7 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				AlertDialog builder = new AlertDialog.Builder(MainActivity.this)
+				new AlertDialog.Builder(MainActivity.this)
                 .setTitle("Device ID")
                 .setMessage(android_id)
                 .setPositiveButton("Confirm", null)

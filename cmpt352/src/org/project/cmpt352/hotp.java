@@ -1,13 +1,5 @@
 
-package com.example.cmpt352;
-import java.io.*;
-import java.io.IOException;
-import java.io.File;
-import java.io.DataInputStream;
-import java.io.FileInputStream;
-import java.lang.reflect.UndeclaredThrowableException;
-
-import java.security.GeneralSecurityException;
+package org.project.cmpt352;
 import java.security.NoSuchAlgorithmException;
 import java.security.InvalidKeyException;
 
